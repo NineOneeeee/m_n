@@ -9,8 +9,7 @@ Win32/
 ARM64/
 
 # Output files
-output/
-*.exe
+
 *.dll
 *.lib
 *.obj
