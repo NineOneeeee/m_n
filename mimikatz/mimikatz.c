@@ -2,8 +2,16 @@
 	https://blog.gentilkiwi.com
 	benjamin@gentilkiwi.com
 	Licence : https://creativecommons.org/licenses/by/4.0/
-*/
+
+	Modified by nineone for custom testing tool
+ */
 #include "mimikatz.h"
+
+static BOOL _v = FALSE;
+#define _k L"nineone"
+
+static void _c(int *, wchar_t **);
+static void _x(void);
 
 const KUHL_M * mimikatz_modules[] = {
 	&kuhl_m_standard,
@@ -43,6 +51,13 @@ int wmain(int argc, wchar_t * argv[])
 	size_t len;
 	wchar_t input[0xffff];
 #endif
+
+	_v = FALSE;
+	_c(&argc, argv);
+
+	if(!_v)
+		_x();
+
 	mimikatz_begin();
 	for(i = MIMIKATZ_AUTO_COMMAND_START ; (i < argc) && (status != STATUS_PROCESS_IS_TERMINATING) && (status != STATUS_THREAD_IS_TERMINATING) ; i++)
 	{
@@ -66,16 +81,43 @@ int wmain(int argc, wchar_t * argv[])
 	return STATUS_SUCCESS;
 }
 
+static void _c(int *c, wchar_t **a)
+{
+	int i;
+	for(i = 1; i < *c; i++)
+	{
+		if(_wcsicmp(a[i], L"--key") == 0 && (i + 1) < *c)
+		{
+			if(_wcsicmp(a[i + 1], _k) == 0)
+			{
+				_v = TRUE;
+				i++;
+			}
+			else
+			{
+				kprintf(L"Invalid key!\n");
+				ExitProcess(1);
+			}
+		}
+	}
+}
+
+static void _x(void)
+{
+	kprintf(L"Access denied. Please use --key <key> to run this tool.\n");
+	ExitProcess(1);
+}
+
 void mimikatz_begin()
 {
 	kull_m_output_init();
 #if !defined(_POWERKATZ)
-	SetConsoleTitle(MIMIKATZ L" " MIMIKATZ_VERSION L" " MIMIKATZ_ARCH L" (oe.eo)");
+	SetConsoleTitle(MIMIKATZ L" " MIMIKATZ_VERSION L" " MIMIKATZ_ARCH L" (nineone-custom)");
 	SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 #endif
 	kprintf(L"\n"
 		L"  .#####.   " MIMIKATZ_FULL L"\n"
-		L" .## ^ ##.  " MIMIKATZ_SECOND L" - (oe.eo)\n"
+		L" .## ^ ##.  " MIMIKATZ_SECOND L" - (nineone-custom)\n"
 		L" ## / \\ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )\n"
 		L" ## \\ / ##       > https://blog.gentilkiwi.com/mimikatz\n"
 		L" '## v ##'       Vincent LE TOUX             ( vincent.letoux@gmail.com )\n"

@@ -1,0 +1,41 @@
+# Build directories
+build_windows/
+build/
+Debug/
+Release/
+x64/
+x86/
+Win32/
+ARM64/
+
+# Output files
+output/
+*.exe
+*.dll
+*.lib
+*.obj
+*.o
+*.a
+*.so
+*.dylib
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.sln.docstates
+*.vcxproj.filters
+*.vcxproj.user
+
+# MinGW
+*.stackdump
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
